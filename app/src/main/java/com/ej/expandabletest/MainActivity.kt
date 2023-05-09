@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity() {
         setTabUi()
         setTabAction()
         //임시 데이터 생성
+        infinityScrollSetUp()
+
+    }
+
+    private fun infinityScrollSetUp() {
         val list: ArrayList<DataPage> = ArrayList<DataPage>().let {
             it.apply {
                 add(DataPage(android.R.color.holo_red_light, "1 Page"))
@@ -46,18 +51,22 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager2.adapter = ViewPagerAdapter(list)
         binding.viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.txtCurrentBanner.text = getString(R.string.viewpager2_banner, 1, list.size)
-        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             //사용자가 스크롤 했을때 position 수정
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 bannerPosition = position
-                binding.txtCurrentBanner.text = getString(R.string.viewpager2_banner, (bannerPosition % list.size)+1, list.size)
+                binding.txtCurrentBanner.text = getString(
+                    R.string.viewpager2_banner,
+                    (bannerPosition % list.size) + 1,
+                    list.size
+                )
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
                 when (state) {
-                    ViewPager2.SCROLL_STATE_IDLE ->{
+                    ViewPager2.SCROLL_STATE_IDLE -> {
                         if (!job.isActive) scrollJobCreate()
                     }
 
@@ -71,6 +80,8 @@ class MainActivity : AppCompatActivity() {
         bannerPosition = Int.MAX_VALUE / 2 - ceil(list.size.toDouble() / 2).toInt()
 
         binding.viewPager2.setCurrentItem(bannerPosition, false)
+
+//        binding.circleIndicator3.setViewPager(binding.viewPager2)
     }
 
     override fun onResume() {

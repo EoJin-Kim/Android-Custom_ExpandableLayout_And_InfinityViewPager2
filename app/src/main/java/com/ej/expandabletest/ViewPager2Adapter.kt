@@ -20,6 +20,7 @@ class ViewPagerAdapter(private val listData: ArrayList<DataPage>) : RecyclerView
     }
 
     override fun getItemCount(): Int = Int.MAX_VALUE
+//    override fun getItemCount(): Int = listData.size
 
 }
 

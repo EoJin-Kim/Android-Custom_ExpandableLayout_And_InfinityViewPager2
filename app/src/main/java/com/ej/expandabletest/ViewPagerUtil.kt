@@ -32,4 +32,5 @@ fun ViewPager2.setCurrentItemWithDuration(
     animator.interpolator = interpolator
     animator.duration = duration
     animator.start()
+    this.adapter
 }
