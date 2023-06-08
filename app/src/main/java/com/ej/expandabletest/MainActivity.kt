@@ -4,6 +4,11 @@ import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.core.view.marginLeft
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
@@ -80,6 +85,32 @@ class MainActivity : AppCompatActivity() {
         bannerPosition = Int.MAX_VALUE / 2 - ceil(list.size.toDouble() / 2).toInt()
 
         binding.viewPager2.setCurrentItem(bannerPosition, false)
+
+        val viewSize = resources.getDimension(R.dimen.indicator_size).toInt()
+        val layoutParams = LinearLayout.LayoutParams(
+            viewSize,viewSize
+        )
+        val marginSize = resources.getDimension(R.dimen.indicator_size).toInt()
+
+
+        val textView1 = TextView(baseContext)
+        textView1.text = ""
+        textView1.background = resources.getDrawable(R.drawable.oval_white)
+
+
+        layoutParams.setMargins(marginSize, 0, marginSize, 0)
+        textView1.layoutParams = layoutParams
+
+        val textView2 = TextView(baseContext)
+        textView2.text = ""
+        textView2.background = resources.getDrawable(R.drawable.oval_white)
+
+
+        layoutParams.setMargins(marginSize, 0, marginSize, 0)
+        textView2.layoutParams = layoutParams
+
+        binding.layoutIndicator.addView(textView1)
+        binding.layoutIndicator.addView(textView2)
 
 //        binding.circleIndicator3.setViewPager(binding.viewPager2)
     }

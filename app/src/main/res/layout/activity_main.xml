@@ -69,9 +69,7 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginBottom="32dp"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/circleIndicator3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
@@ -90,16 +88,17 @@
             app:layout_constraintEnd_toEndOf="@+id/viewPager2"
             tools:text="1 / 3 모두보기" />
 
-        <me.relex.circleindicator.CircleIndicator3
-            android:id="@+id/circleIndicator3"
+        <LinearLayout
+            android:id="@+id/layout_indicator"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginBottom="8dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="100dp"
             android:background="@color/purple_200"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewPager2"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
