@@ -3,12 +3,8 @@ package com.ej.expandabletest
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.view.marginLeft
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
@@ -16,7 +12,6 @@ import com.ej.expandabletest.databinding.ActivityMainBinding
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlin.math.ceil
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
@@ -24,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     var tapSize = 0f
 
     private var bannerPosition = 0
+
+    private var bannerIndicatorList = arrayListOf<TextView>()
 
     lateinit var job : Job
 
@@ -56,18 +53,28 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager2.adapter = ViewPagerAdapter(list)
         binding.viewPager2.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.txtCurrentBanner.text = getString(R.string.viewpager2_banner, 1, list.size)
+
+        for (i in 1..6) {
+            createBannerIndicator()
+        }
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            //사용자가 스크롤 했을때 position 수정
+
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 bannerPosition = position
+                val nowPosition = position% list.size
+                val prevPosition = (position-1) % list.size
+                bannerIndicatorList[nowPosition].background = resources.getDrawable(R.drawable.oval_black)
+                bannerIndicatorList[prevPosition].background = resources.getDrawable(R.drawable.oval_white)
                 binding.txtCurrentBanner.text = getString(
                     R.string.viewpager2_banner,
-                    (bannerPosition % list.size) + 1,
+                    bannerPosition % list.size  + 1,
                     list.size
                 )
             }
 
+
+            //사용자가 스크롤 했을때 position 수정
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
                 when (state) {
@@ -86,33 +93,29 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewPager2.setCurrentItem(bannerPosition, false)
 
+
+
+//        binding.circleIndicator3.setViewPager(binding.viewPager2)
+    }
+
+    private fun createBannerIndicator() {
         val viewSize = resources.getDimension(R.dimen.indicator_size).toInt()
         val layoutParams = LinearLayout.LayoutParams(
-            viewSize,viewSize
+            viewSize, viewSize
         )
         val marginSize = resources.getDimension(R.dimen.indicator_size).toInt()
 
 
-        val textView1 = TextView(baseContext)
-        textView1.text = ""
-        textView1.background = resources.getDrawable(R.drawable.oval_white)
+        val indicator = TextView(baseContext)
+        indicator.text = ""
+        indicator.background = resources.getDrawable(R.drawable.oval_white)
 
 
         layoutParams.setMargins(marginSize, 0, marginSize, 0)
-        textView1.layoutParams = layoutParams
+        indicator.layoutParams = layoutParams
 
-        val textView2 = TextView(baseContext)
-        textView2.text = ""
-        textView2.background = resources.getDrawable(R.drawable.oval_white)
-
-
-        layoutParams.setMargins(marginSize, 0, marginSize, 0)
-        textView2.layoutParams = layoutParams
-
-        binding.layoutIndicator.addView(textView1)
-        binding.layoutIndicator.addView(textView2)
-
-//        binding.circleIndicator3.setViewPager(binding.viewPager2)
+        bannerIndicatorList.add(indicator)
+        binding.layoutIndicator.addView(indicator)
     }
 
     override fun onResume() {
